@@ -1,0 +1,277 @@
+{
+  "settings": {
+    "store": {
+      "name": "Three Times a Lady Boutique",
+      "short_name": "Three Times a Lady",
+      "legal_name": "Three Times a Lady Boutique",
+      "tagline": "Boutique · Jonesboro",
+      "address_line1": "2111 Race Street",
+      "address_line2": "Suite 4",
+      "city": "Jonesboro",
+      "state": "AR",
+      "zip": "72401",
+      "address_note": "Across from Sam's Club",
+      "phone": "(870) 206-8021",
+      "facebook_url": "",
+      "award_text": "Voted Best of Northeast Arkansas 2026",
+      "order_prefix": "TTL-",
+      "notify_emails": [],
+      "email_from_name": "Three Times a Lady Boutique",
+      "logo": "/brand/wordmark.png",
+      "logo_wide": true,
+      "logo_mark": "/brand/lady.png",
+      "header_name": "Three Times a Lady",
+      "header_sub": "Boutique · Jonesboro",
+      "logo_tall": "/brand/logo.png",
+      "logo_footer": "/brand/lockup.jpg",
+      "icon": "/brand/icon-64.png"
+    },
+    "home": {
+      "hero_title": "Handbags made for",
+      "hero_script": "every Lady",
+      "hero_text": "Shop Pamela's purses online, then pick yours up at the boutique on Race Street in Jonesboro.",
+      "hero_photo_note": "Hero photo goes here",
+      "watermark": "Lady",
+      "seal_text": "BEST OF NORTHEAST ARKANSAS · 2026 ·",
+      "ticks": [
+        "Free store pickup",
+        "Pay from your phone"
+      ],
+      "ribbon": [
+        "Order online",
+        "Pick up in Jonesboro",
+        "Voted Best of Northeast Arkansas 2026",
+        "Three Times a Lady"
+      ],
+      "trust": [
+        {
+          "icon": "bag",
+          "title": "Free store pickup",
+          "text": "Order online, pick up in Jonesboro"
+        },
+        {
+          "icon": "heart",
+          "title": "Picked by Pamela",
+          "text": "Every bag chosen by hand"
+        },
+        {
+          "icon": "clock",
+          "title": "Ordered just for you",
+          "text": "Each purse is ordered when you buy it"
+        }
+      ],
+      "in_store_lines": [
+        {
+          "name": "Women's clothing",
+          "icon": "shirt"
+        },
+        {
+          "name": "Jewelry",
+          "icon": "ring"
+        },
+        {
+          "name": "Shoes",
+          "icon": "shoe"
+        },
+        {
+          "name": "Accessories",
+          "icon": "sparkle"
+        }
+      ],
+      "shop_note": "These are sample listings with stock photos. Pamela's real purses, photos and prices go here.",
+      "hero_style": "dark",
+      "hero_photo_key": "samples/tote-02.jpg"
+    },
+    "about": {
+      "enabled": true,
+      "eyebrow": "The owner",
+      "title": "Meet",
+      "title_script": "Pamela",
+      "button": "Meet Pamela",
+      "lead": "Three Times a Lady Boutique is owned by Pamela Mahoney, right here in Jonesboro.",
+      "quote": "An upscale boutique that features local small business owners, all combined in one storefront.",
+      "quote_cite": "How Pamela describes the shop",
+      "story": "Pamela's story goes here in her own words: how the shop started, what she loves to stock, and what customers can expect when they walk in.",
+      "story_is_sample": true,
+      "photo_note": "Photo of Pamela goes here",
+      "facts": [
+        {
+          "big": "Jonesboro",
+          "small": "Race Street, Suite 4"
+        },
+        {
+          "big": "Purses",
+          "small": "Totes, crossbodies, clutches and more"
+        },
+        {
+          "big": "2026",
+          "small": "Voted Best of Northeast Arkansas"
+        }
+      ],
+      "photo_key": null
+    },
+    "hours": [
+      {
+        "label": "Monday – Friday",
+        "value": "10 AM – 5 PM"
+      },
+      {
+        "label": "Saturday",
+        "value": "10 AM – 4 PM"
+      },
+      {
+        "label": "Sunday",
+        "value": "Closed"
+      }
+    ],
+    "closures": [],
+    "fulfillment": {
+      "pickup_instructions": ""
+    },
+    "policies": {
+      "returns": ""
+    },
+    "catalog": {
+      "show_sold": true,
+      "made_to_order": true,
+      "lead_time": "2–3 weeks"
+    },
+    "banner": {
+      "enabled": true,
+      "headline": "Holiday purses are in",
+      "text": "Your sale or event announcement goes here.",
+      "starts_on": null,
+      "ends_on": null,
+      "is_sample": true
+    },
+    "theme": {
+      "look": "lady",
+      "font_script": "Allura",
+      "pink": "#f58cc0",
+      "hot": "#e0177c",
+      "deep": "#a10f58",
+      "blush": "#fde6f1",
+      "cream": "#fffafc",
+      "ink": "#0e0b0d",
+      "gold": "#c39a43",
+      "gold2": "#f0d78c"
+    }
+  },
+  "categories": [
+    {
+      "name": "Handbags",
+      "icon": "bag",
+      "one": "purse",
+      "many": "purses",
+      "preset": null,
+      "styles": [
+        "Totes",
+        "Crossbody",
+        "Shoulder bags",
+        "Satchels",
+        "Clutches"
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "file": "tote-01.jpg",
+      "style": "totes",
+      "price_cents": 5800,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Camel Pebbled Leather Tote",
+      "description": "Soft pebbled leather in a warm camel with darker stitched handles. Roomy enough for a laptop, a water bottle and everything else, with an inside zip pocket for keys.\n\nShoulder-length handles, magnetic snap top."
+    },
+    {
+      "file": "tote-02.jpg",
+      "style": "satchels",
+      "price_cents": 4600,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Oatmeal Tweed Satchel",
+      "description": "Woven oatmeal tweed with black leather handles and gold hardware. Carry it by the handles or clip on the long strap and wear it crossbody.\n\nStructured shape that stands on its own."
+    },
+    {
+      "file": "tote-03.jpg",
+      "style": "totes",
+      "price_cents": 2400,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Everyday Black Canvas Tote",
+      "description": "The tote you'll grab every single day. Sturdy black canvas, long handles and room for groceries, gym clothes or a weekend away.\n\nWashes up easy."
+    },
+    {
+      "file": "crossbody-02.jpg",
+      "style": "crossbody",
+      "price_cents": 4200,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Blush Scalloped Flap Bag",
+      "description": "Blush faux leather with a scalloped flap and a black satin scarf tied on the handle. Dressy enough for church, easy enough for errands.\n\nTop handle plus an adjustable crossbody strap."
+    },
+    {
+      "file": "crossbody-03.jpg",
+      "style": "shoulder-bags",
+      "price_cents": 4400,
+      "sale_price_cents": 3800,
+      "sold_out": false,
+      "name": "Cognac Chain Shoulder Bag",
+      "description": "A little '90s shoulder bag in rich cognac with a leather-woven chain strap and a silk scarf accent.\n\nFits your phone, wallet, keys and lipstick."
+    },
+    {
+      "file": "satchel-01.jpg",
+      "style": "crossbody",
+      "price_cents": 6400,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Rust Leather Buckle Messenger",
+      "description": "Rust leather messenger with chocolate buckle straps and brass rings. Gets better with every wear.\n\nWide adjustable strap, front flap with two magnetic buckles."
+    },
+    {
+      "file": "satchel-02.jpg",
+      "style": "satchels",
+      "price_cents": 4800,
+      "sale_price_cents": null,
+      "sold_out": true,
+      "name": "Cherry Red Dome Satchel",
+      "description": "Glossy textured cherry red in a classic dome shape with a two-way zip. A pop of color for any outfit.\n\nTwo top handles, gold feet on the bottom."
+    },
+    {
+      "file": "satchel-03.jpg",
+      "style": "satchels",
+      "price_cents": 4800,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Black Embossed Dome Satchel",
+      "description": "The same classic dome satchel in black, with a wavy embossed finish that hides scuffs. Goes with everything.\n\nTwo-way zip, top handles, inside pocket."
+    },
+    {
+      "file": "clutch-01.jpg",
+      "style": "clutches",
+      "price_cents": 3400,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Gold Swirl Hard-Shell Clutch",
+      "description": "Hard-shell evening clutch with a gold and pewter swirl pattern and a crystal clasp. Wedding guest ready.\n\nTuck-away chain strap inside."
+    },
+    {
+      "file": "clutch-02.jpg",
+      "style": "clutches",
+      "price_cents": 2800,
+      "sale_price_cents": null,
+      "sold_out": false,
+      "name": "Ivory Pleated Frame Clutch",
+      "description": "Soft ivory pleats on a silver frame with a slim chain strap. Pretty for a bride, a shower or a night out.\n\nKiss-lock close."
+    },
+    {
+      "file": "clutch-03.jpg",
+      "style": "clutches",
+      "price_cents": 5200,
+      "sale_price_cents": 4400,
+      "sold_out": false,
+      "name": "Champagne Crystal Evening Clutch",
+      "description": "Covered in champagne crystals with a gold frame and jeweled clasp. It catches every light in the room.\n\nComes with a chain strap."
+    }
+  ]
+}

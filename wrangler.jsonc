@@ -1,0 +1,14 @@
+{
+  "name": "boutique-store",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "alias": { "sveltekit-worker": "./.svelte-kit/cloudflare/_worker.js", "$lib": "./src/lib" },
+  "assets": { "binding": "ASSETS", "directory": ".svelte-kit/cloudflare" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "boutique-store", "database_id": "local-only", "migrations_dir": "migrations" }
+  ],
+  "r2_buckets": [{ "binding": "PHOTOS", "bucket_name": "boutique-store-photos" }],
+  "kv_namespaces": [{ "binding": "OAUTH_KV", "id": "local-only" }],
+  "vars": { "PAYMENT_DRIVER": "test", "IMAGE_RESIZING": "off" }
+}

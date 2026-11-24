@@ -1,0 +1,145 @@
+{
+  "settings": {
+    "store": {
+      "name": "Your Boutique",
+      "short_name": "Your Boutique",
+      "legal_name": "Your Boutique",
+      "tagline": "Boutique",
+      "address_line1": "",
+      "address_line2": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "address_note": "",
+      "phone": "",
+      "facebook_url": "",
+      "award_text": "",
+      "order_prefix": "SHOP-",
+      "notify_emails": [],
+      "email_from_name": "Your Boutique",
+      "logo": "",
+      "logo_wide": false,
+      "logo_mark": "",
+      "header_name": "",
+      "header_sub": "",
+      "logo_tall": "",
+      "logo_footer": "",
+      "icon": ""
+    },
+    "home": {
+      "hero_title": "Handbags made for",
+      "hero_script": "every day",
+      "hero_text": "Shop online, then pick yours up at the shop.",
+      "hero_photo_note": "Hero photo goes here",
+      "watermark": "Boutique",
+      "seal_text": "",
+      "ticks": [
+        "Free store pickup",
+        "Pay from your phone"
+      ],
+      "ribbon": [
+        "Order online",
+        "Pick up in store"
+      ],
+      "trust": [
+        {
+          "icon": "bag",
+          "title": "Free store pickup",
+          "text": "Order online, pick up at the shop"
+        },
+        {
+          "icon": "heart",
+          "title": "Picked by hand",
+          "text": "Every bag chosen by the owner"
+        },
+        {
+          "icon": "clock",
+          "title": "Ordered just for you",
+          "text": "Each purse is ordered when you buy it"
+        }
+      ],
+      "in_store_lines": [],
+      "shop_note": "",
+      "hero_style": "dark",
+      "hero_photo_key": null
+    },
+    "about": {
+      "enabled": true,
+      "eyebrow": "The owner",
+      "title": "Meet",
+      "title_script": "the owner",
+      "button": "Meet the owner",
+      "lead": "",
+      "quote": "",
+      "quote_cite": "",
+      "story": "The owner's story goes here in her own words.",
+      "story_is_sample": true,
+      "photo_note": "Owner photo goes here",
+      "facts": [],
+      "photo_key": null
+    },
+    "hours": [
+      {
+        "label": "Monday – Friday",
+        "value": "10 AM – 5 PM"
+      },
+      {
+        "label": "Saturday",
+        "value": "10 AM – 4 PM"
+      },
+      {
+        "label": "Sunday",
+        "value": "Closed"
+      }
+    ],
+    "closures": [],
+    "fulfillment": {
+      "pickup_instructions": ""
+    },
+    "policies": {
+      "returns": ""
+    },
+    "catalog": {
+      "show_sold": true,
+      "made_to_order": true,
+      "lead_time": "2–3 weeks"
+    },
+    "banner": {
+      "enabled": false,
+      "headline": "",
+      "text": "",
+      "starts_on": null,
+      "ends_on": null,
+      "is_sample": true
+    },
+    "theme": {
+      "look": "lady",
+      "font_script": "Allura",
+      "pink": "#f58cc0",
+      "hot": "#e0177c",
+      "deep": "#a10f58",
+      "blush": "#fde6f1",
+      "cream": "#fffafc",
+      "ink": "#0e0b0d",
+      "gold": "#c39a43",
+      "gold2": "#f0d78c"
+    }
+  },
+  "categories": [
+    {
+      "name": "Handbags",
+      "icon": "bag",
+      "one": "purse",
+      "many": "purses",
+      "preset": null,
+      "styles": [
+        "Totes",
+        "Crossbody",
+        "Shoulder bags",
+        "Satchels",
+        "Clutches"
+      ]
+    }
+  ],
+  "samples": []
+}
