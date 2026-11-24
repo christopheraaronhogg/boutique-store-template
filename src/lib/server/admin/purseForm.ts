@@ -1,5 +1,5 @@
 import { MAX_PHOTOS_PER_CALL, PhotoProblem, readPicture, type Picture } from '$lib/server/owner/images';
-import type { NewPurse, PurseChanges, Status } from '$lib/server/owner/purses';
+import { OwnerProblem, type NewPurse, type PurseChanges, type Status } from '$lib/server/owner/purses';
 
 export type PurseFields = { name: string; price: string; sale_price: string; description: string; style: string; status: Status; sold: boolean };
 
@@ -45,4 +45,20 @@ export async function readUploads(form: FormData): Promise<{ pictures: Picture[]
     }
   }
   return { pictures, problems };
+}
+
+export function quickChanges(form: FormData): { changes: PurseChanges; said: string } {
+  const what = String(form.get('what') ?? '');
+  if (what === 'sold') return { changes: { sold: true }, said: 'marked sold' };
+  if (what === 'unsold') return { changes: { sold: false }, said: 'for sale again' };
+  if (what === 'show') return { changes: { status: 'live' }, said: 'on the site now' };
+  if (what === 'hide') return { changes: { status: 'hidden' }, said: 'hidden from the site' };
+  if (what === 'price') {
+    const price = String(form.get('price') ?? '').trim();
+    const sale = String(form.get('sale_price') ?? '').trim();
+    if (!price) throw new OwnerProblem('Type a price, like 58.');
+    const changes = { price: dollars(price), sale_price: sale ? dollars(sale) : null };
+    return { changes, said: changes.sale_price === null ? 'price saved' : 'price and sale price saved' };
+  }
+  throw new OwnerProblem('Pick what to change.');
 }
