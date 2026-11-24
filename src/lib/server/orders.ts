@@ -20,6 +20,10 @@ export type Order = {
   created_at: string;
   paid_at: string | null;
   cancel_reason: string | null;
+  payment_reference: string | null;
+  provider_order_id: string | null;
+  provider_pay_url: string | null;
+  refunded_cents: number;
   items: OrderItem[];
 };
 
@@ -77,16 +81,29 @@ export async function createOrder(db: D1Database, s: Settings, lines: BagLine[],
 }
 
 export async function findOrder(db: D1Database, number: string, accessKey: string): Promise<Order | null> {
-  const row = await db
-    .prepare('SELECT * FROM orders WHERE number = ?')
-    .bind(number)
-    .first<Omit<Order, 'items' | 'is_test'> & { is_test: number }>();
+  const row = await db.prepare('SELECT * FROM orders WHERE number = ?').bind(number).first<OrderRow>();
   if (!row || !timingSafeEqual(row.access_key, accessKey)) return null;
+  return withItems(db, row);
+}
+
+export async function findOrderById(db: D1Database, id: number): Promise<Order | null> {
+  const row = await db.prepare('SELECT * FROM orders WHERE id = ?').bind(id).first<OrderRow>();
+  return row ? withItems(db, row) : null;
+}
+
+type OrderRow = Omit<Order, 'items' | 'is_test'> & { is_test: number };
+
+async function withItems(db: D1Database, row: OrderRow): Promise<Order> {
   const { results } = await db
     .prepare('SELECT name, photo_key, unit_price_cents, quantity, line_total_cents FROM order_items WHERE order_id = ? ORDER BY id')
     .bind(row.id)
     .all<OrderItem>();
   return { ...row, is_test: row.is_test === 1, items: results };
+}
+
+export async function setPaymentLink(db: D1Database, order: Order, providerOrderId: string, payUrl: string): Promise<Order> {
+  await db.prepare('UPDATE orders SET provider_order_id = ?, provider_pay_url = ? WHERE id = ?').bind(providerOrderId, payUrl, order.id).run();
+  return { ...order, provider_order_id: providerOrderId, provider_pay_url: payUrl };
 }
 
 export async function markPaid(db: D1Database, order: Order, reference: string): Promise<boolean> {

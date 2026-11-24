@@ -5,7 +5,8 @@ type RawSettings = typeof fullBrand.settings;
 
 export type Closure = { date: string; note: string };
 
-export type Settings = Omit<RawSettings, 'banner' | 'about' | 'home' | 'closures'> & {
+export type Settings = Omit<RawSettings, 'store' | 'banner' | 'about' | 'home' | 'closures'> & {
+  store: Omit<RawSettings['store'], 'notify_emails'> & { notify_emails: string[] };
   closures: Closure[];
   banner: Omit<RawSettings['banner'], 'starts_on' | 'ends_on'> & { starts_on: string | null; ends_on: string | null };
   about: Omit<RawSettings['about'], 'photo_key'> & { photo_key: string | null };

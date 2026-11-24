@@ -31,12 +31,14 @@
         <p>Your order <b>{o.number}</b> is in. We'll email you at {o.email}.</p>
         {#if o.is_test}<p class="notice">This was a <b>test</b> order. No money was taken.</p>{/if}
         <p><b>Status:</b> {statusLabel[o.status]}</p>
+        {#if o.refunded_cents > 0}<p class="notice">Refunded: <b>{money(o.refunded_cents)}</b></p>{/if}
       {:else if o.status === 'cancelled'}
         <h2>Order <span class="script pk">cancelled</span></h2>
         <p>{o.cancel_reason}</p>
       {:else}
         <h2>Not finished <span class="script pk">yet</span></h2>
         <p>This checkout wasn't paid.</p>
+        {#if o.payment_driver === 'square'}<p>Just paid? It can take a moment to show here. <a href={`?key=${o.access_key}`}>Refresh this page</a>.</p>{/if}
         {#if data.payUrl}<a class="btn btn-hot" href={data.payUrl}>Finish paying</a>{/if}
       {/if}
       <ul class="oitems">

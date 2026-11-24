@@ -3,6 +3,7 @@ import { moveOrder, ownerOrders, type OrderStatus } from '$lib/server/orders';
 import { ownerOnly } from '$lib/server/owner/sessions';
 import { publicOrigin } from '$lib/server/mcp/env';
 import { CHANGE_GUIDE } from '$lib/server/mcp/tools';
+import { orderEmailsOff } from '$lib/server/orderEmail';
 import type { Actions, PageServerLoad } from './$types';
 
 const TABS = ['open', 'pending_payment', 'picked_up', 'cancelled', 'all'] as const;
@@ -12,7 +13,7 @@ export const load: PageServerLoad = async ({ locals, url, platform }) => {
   const asked = url.searchParams.get('show');
   const show = (TABS as readonly string[]).includes(asked ?? '') ? (asked as (typeof TABS)[number]) : 'open';
   const muse = { url: `${publicOrigin(platform!.env)}/mcp`, examples: CHANGE_GUIDE.map((g) => g.she_says) };
-  return { show, orders: await ownerOrders(locals.db, show, 100), muse };
+  return { show, orders: await ownerOrders(locals.db, show, 100), muse, mailOff: orderEmailsOff(platform!.env, locals.settings) };
 };
 
 export const actions: Actions = {

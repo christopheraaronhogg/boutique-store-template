@@ -70,7 +70,15 @@ Leave out every field that is still empty and every section where I didn't give 
 - Cloudflare: in the dashboard, Manage Account, then Members, then Invite. Role: Administrator.
 - GitHub: open my store's repository, then Settings, then Collaborators, then Add people.
 
-**Step 7. My own web address (optional).** If I want a name like `myshop.com`: in Cloudflare, Domain Registration, then Register Domains. I pay for the domain myself, so ask me before I buy. After it's mine, go to Workers & Pages, my store, Settings, Domains & Routes, Add, Custom domain, and type it in.
+**Step 7. My own web address (optional).** If I want a name like `myshop.com`: in Cloudflare, Domain Registration, then Register Domains. I pay for the domain myself, so ask me before I buy. After it's mine, go to Workers & Pages, my store, Settings, Domains & Routes, Add, Custom domain, and type it in. Then turn on new-order emails:
+
+- In Cloudflare, open the domain, then Email, then Email Routing, and turn it on (tap Add records if it asks).
+- Under Destination addresses, add each address the store sends new orders to (the new-order email from step 5), and I tap the link Cloudflare emails me. If I want orders at a different address, call `setup_store` with `{"store_setup": {"notify_emails": ["..."]}}` first.
+- If Cloudflare also shows Compute, then Email Service, then Email Sending, tap Onboard Domain and pick my domain.
+- Call `setup_store` with `{"store_setup": {"order_email_from": "orders@"}}` plus my domain, like `orders@myshop.com`.
+- Call `test_order_email` and ask me to check my inbox. If it says it failed, it says why; fix that and try again.
+
+Until then, new orders show in my store manager and when I ask you.
 
 **Step 8. Show me how to add a purse.** Ask me to send you a photo of one purse and its price. Write a name and a short description, show me, and add it when I say yes. Then give me the link to see it on my store.
 

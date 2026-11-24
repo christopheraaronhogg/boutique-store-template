@@ -10,6 +10,12 @@ export type StoreEnv = {
   PUBLIC_URL: string;
   OWNER_PASSWORD?: string;
   STORE_KEY?: string;
+  SQUARE_ENVIRONMENT?: string;
+  SQUARE_ACCESS_TOKEN?: string;
+  SQUARE_LOCATION_ID?: string;
+  SQUARE_WEBHOOK_SIGNATURE_KEY?: string;
+  EMAIL?: unknown;
+  ORDER_EMAIL_FROM?: string;
   OAUTH_PROVIDER?: OAuthHelpers;
 };
 

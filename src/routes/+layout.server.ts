@@ -1,5 +1,5 @@
 import { bagCount } from '$lib/server/bag';
-import { testPaymentsOn } from '$lib/server/payments';
+import { realPaymentsOn } from '$lib/server/payments';
 import { loadSettings } from '$lib/server/settings';
 import { inAdmin } from '$lib/adminArea';
 import type { LayoutServerLoad } from './$types';
@@ -10,7 +10,7 @@ export const load: LayoutServerLoad = async ({ locals, platform, url, route, req
     settings: request.method === 'GET' ? locals.settings : await loadSettings(locals.db),
     bagCount: bagCount(locals.bag),
     resizing: platform?.env.IMAGE_RESIZING === 'on',
-    testMode: testPaymentsOn(platform?.env.PAYMENT_DRIVER),
+    testMode: !realPaymentsOn(platform?.env),
     hasSamples: samples !== null,
     admin: inAdmin(route.id, url.pathname),
   };

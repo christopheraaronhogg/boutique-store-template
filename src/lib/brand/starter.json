@@ -16,6 +16,7 @@
       "award_text": "",
       "order_prefix": "SHOP-",
       "notify_emails": [],
+      "order_email_from": "",
       "email_from_name": "Your Boutique",
       "logo": "",
       "logo_wide": false,

@@ -15,7 +15,7 @@ export const mcpApi = {
     if (ctx.props.via !== 'store_key' && !ctx.auth?.scope.includes(STORE_SCOPE)) {
       return ctx.auth ? insufficientScope(ctx.auth, [STORE_SCOPE]) : Response.json({ error: 'forbidden' }, { status: 403 });
     }
-    const server = buildServer({ db: env.DB, bucket: env.PHOTOS, origin: publicOrigin(env) });
+    const server = buildServer({ db: env.DB, bucket: env.PHOTOS, origin: publicOrigin(env), mail: env });
     const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true, maxRequestBodySize: MAX_CALL_BYTES });
     await server.connect(transport);
     const response = await transport.handleRequest(request);

@@ -28,6 +28,7 @@
 </nav>
 {#if form && 'done' in form}<p class="flash" role="status">{form.done}</p>{/if}
 {#if form && 'problem' in form}<p class="oops" role="alert">{form.problem}</p>{/if}
+{#if data.mailOff}<p class="meta" role="note">New-order emails are off: {data.mailOff}. Orders still show here.</p>{/if}
 
 {#if data.orders.length === 0}
   <p class="empty">{data.show === 'open' ? 'Nothing to do right now.' : 'No orders here.'}</p>
@@ -37,7 +38,7 @@
       <li>
         <div class="grow">
           <div>
-            <span class="title">{o.number}</span><span class="pill {o.status}">{label[o.status]}</span>{#if o.is_test}<span class="pill">Test</span>{/if}
+            <span class="title">{o.number}</span><span class="pill {o.status}">{label[o.status]}</span>{#if o.is_test}<span class="pill">Test</span>{/if}{#if o.refunded_cents > 0}<span class="pill">Refunded {money(o.refunded_cents)}</span>{/if}
           </div>
           <div class="meta">
             {o.customer_name} · <a href="tel:{o.phone.replace(/[^\d+]/g, '')}">{o.phone}</a> · <a href="mailto:{o.email}">{o.email}</a>

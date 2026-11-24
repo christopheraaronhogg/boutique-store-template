@@ -8,7 +8,7 @@ export async function ownerToolCall(request: Request, env: StoreEnv, owner: bool
   if (request.method !== 'POST') return Response.json({ error: 'POST only.' }, { status: 405 });
   if (request.headers.get('origin') !== new URL(request.url).origin) return Response.json({ error: 'forbidden' }, { status: 403 });
   if (!(request.headers.get('content-type') ?? '').startsWith('application/json')) return Response.json({ error: 'Send JSON.' }, { status: 415 });
-  const server = buildServer({ db: env.DB, bucket: env.PHOTOS, origin: publicOrigin(env) });
+  const server = buildServer({ db: env.DB, bucket: env.PHOTOS, origin: publicOrigin(env), mail: env });
   const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true, maxRequestBodySize: MAX_CALL_BYTES });
   await server.connect(transport);
   const response = await transport.handleRequest(request);

@@ -16,6 +16,7 @@
       "award_text": "Voted Best of Northeast Arkansas 2026",
       "order_prefix": "TTL-",
       "notify_emails": [],
+      "order_email_from": "",
       "email_from_name": "Three Times a Lady Boutique",
       "logo": "/brand/wordmark.png",
       "logo_wide": true,

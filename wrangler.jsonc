@@ -10,5 +10,6 @@
   ],
   "r2_buckets": [{ "binding": "PHOTOS", "bucket_name": "boutique-store-photos" }],
   "kv_namespaces": [{ "binding": "OAUTH_KV", "id": "local-only" }],
-  "vars": { "PAYMENT_DRIVER": "test", "IMAGE_RESIZING": "off" }
+  "send_email": [{ "name": "EMAIL" }],
+  "vars": { "IMAGE_RESIZING": "off" }
 }

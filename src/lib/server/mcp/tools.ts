@@ -13,8 +13,9 @@ import { changeSettings, describeEditable, EDITABLE_SECTIONS } from '$lib/server
 import { applySetup, BRAND_IMAGES } from '$lib/server/owner/setup';
 import { addedPurse, beforeChange, recentChanges, recordChange, undoChange, type Targets } from '$lib/server/owner/history';
 import { makeUploadLink, UPLOAD_LINK_HOURS } from '$lib/server/owner/uploads';
+import { sendTestOrderEmail, type MailEnv } from '$lib/server/orderEmail';
 
-export type ToolContext = { db: D1Database; bucket: R2Bucket; origin: string; fetcher?: typeof fetch };
+export type ToolContext = { db: D1Database; bucket: R2Bucket; origin: string; fetcher?: typeof fetch; mail?: MailEnv };
 
 export const MAX_CALL_BYTES = 24 * 1024 * 1024;
 
@@ -50,6 +51,7 @@ export const CHANGE_GUIDE: { she_says: string; do: string }[] = [
   { she_says: 'Undo that / put it back the way it was', do: 'undo_change (no id undoes her last change; it puts back exactly what was there before)' },
   { she_says: 'What did we change? / undo the price change from yesterday', do: 'recent_changes, then undo_change change_id:<id>' },
   { she_says: 'What orders do I have?', do: 'list_orders (open orders by default)' },
+  { she_says: 'Am I getting order emails? / turn on order emails', do: 'test_order_email (sends her a sample; if it says off or failed, it says why). Turning them on is step 7 of SETUP-PASTE.md' },
   { she_says: 'I ordered it / it came in / they picked it up', do: 'update_order status "ordered" / "ready" / "picked_up"' },
 ];
 
@@ -332,6 +334,16 @@ export function buildServer(ctx: ToolContext): McpServer {
   );
 
   server.registerTool(
+    'test_order_email',
+    {
+      title: 'Send a test order email',
+      description: 'Sends a sample new-order email (marked TEST) to the new-order addresses (notify_emails), to check order emails work. Answers why when they are off or the send fails.',
+      inputSchema: {},
+    },
+    () => run(async () => ({ result: ctx.mail ? await sendTestOrderEmail(ctx.mail, await loadSettings(ctx.db)) : 'Order emails are not available here.' })),
+  );
+
+  server.registerTool(
     'list_orders',
     {
       title: 'List orders',
@@ -450,7 +462,7 @@ export function buildServer(ctx: ToolContext): McpServer {
     {
       title: 'Set up the whole store at once',
       description:
-        'First-time setup: applies the whole store profile in one call (name, address, phone, hours, words, colors, logos, owner photo, top photo). Read the profile back to the owner and get her yes before calling. Each section takes the same fields as update_store_settings (see what_can_i_change). Nothing is saved unless every part is valid, so fix what the error names and send it again. store_setup holds fields only set here: order_prefix (like "TTL-"), header_name, email_from_name, notify_emails (where new-order emails go), logo_wide. Images take a url or base64 data, like photos.',
+        'First-time setup: applies the whole store profile in one call (name, address, phone, hours, words, colors, logos, owner photo, top photo). Read the profile back to the owner and get her yes before calling. Each section takes the same fields as update_store_settings (see what_can_i_change). Nothing is saved unless every part is valid, so fix what the error names and send it again. store_setup holds fields only set here: order_prefix (like "TTL-"), header_name, email_from_name, notify_emails (where new-order emails go), order_email_from (the address order emails come from, on her own domain, like orders@myshop.com; see SETUP-PASTE.md step 7), logo_wide. It can be called again later with only store_setup. Images take a url or base64 data, like photos.',
       inputSchema: z.strictObject({
         sections: z
           .strictObject(Object.fromEntries(EDITABLE_SECTIONS.map((s) => [s, z.union([z.record(z.string(), z.unknown()), z.array(z.record(z.string(), z.unknown()))]).optional()])))
@@ -462,6 +474,7 @@ export function buildServer(ctx: ToolContext): McpServer {
             header_name: z.string().optional(),
             email_from_name: z.string().optional(),
             notify_emails: z.array(z.string()).optional(),
+            order_email_from: z.string().optional(),
             logo_wide: z.boolean().optional(),
           })
           .optional(),
@@ -544,6 +557,7 @@ function orderCard(o: Order) {
     total: moneyShort(o.total_cents),
     placed: o.created_at,
     paid: o.paid_at,
+    refunded: o.refunded_cents > 0 ? moneyShort(o.refunded_cents) : null,
     cancel_reason: o.cancel_reason,
   };
 }

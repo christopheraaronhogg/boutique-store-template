@@ -5,7 +5,7 @@ import { OwnerProblem } from './purses';
 export const EDITABLE_SECTIONS = ['store', 'home', 'about', 'banner', 'hours', 'closures', 'fulfillment', 'policies', 'catalog', 'theme'] as const;
 export type EditableSection = (typeof EDITABLE_SECTIONS)[number];
 
-const LOCKED_KEYS = /(^|_)(logo|icon|mark)(_|$)|^order_prefix$|^header_name$|_photo_key$|^photo_key$|^is_sample$|^story_is_sample$|^notify_emails$|^email_from_name$/;
+const LOCKED_KEYS = /(^|_)(logo|icon|mark)(_|$)|^order_prefix$|^header_name$|_photo_key$|^photo_key$|^is_sample$|^story_is_sample$|^notify_emails$|^email_from_name$|^order_email_from$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 export function realDate(value: string): boolean {
@@ -38,7 +38,7 @@ export function nextSection(current: Settings, section: EditableSection, changes
   return mergeObject(section, current[section] as Record<string, unknown>, changes);
 }
 
-export const SETUP_STORE_KEYS = ['order_prefix', 'header_name', 'email_from_name', 'notify_emails', 'logo_wide'] as const;
+export const SETUP_STORE_KEYS = ['order_prefix', 'header_name', 'email_from_name', 'notify_emails', 'order_email_from', 'logo_wide'] as const;
 const EMAIL = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/;
 
 export function setupStoreValue(key: (typeof SETUP_STORE_KEYS)[number], value: unknown): unknown {
@@ -53,6 +53,10 @@ export function setupStoreValue(key: (typeof SETUP_STORE_KEYS)[number], value: u
   if (key === 'notify_emails') {
     if (!Array.isArray(value) || value.length > 5 || !value.every((v) => typeof v === 'string' && EMAIL.test(v.trim()))) throw new OwnerProblem('notify_emails should be a list of up to 5 email addresses.');
     return value.map((v: string) => v.trim().toLowerCase());
+  }
+  if (key === 'order_email_from') {
+    if (typeof value !== 'string' || (value.trim() !== '' && !EMAIL.test(value.trim()))) throw new OwnerProblem('order_email_from should be one email address on the store\'s own domain, like orders@myshop.com, or "" to turn it off.');
+    return value.trim().toLowerCase();
   }
   if (typeof value !== 'string') throw new OwnerProblem(`${key} should be text.`);
   return clip(value, key === 'header_name' ? 40 : 80);

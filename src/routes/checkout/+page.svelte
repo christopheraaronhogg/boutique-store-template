@@ -19,7 +19,8 @@
   <div class="wrap">
     <div class="head" style="margin-bottom:18px"><h2>Check <span class="script pk">out</span></h2></div>
     {#each data.notes as n}<div class="notice" role="status">{n}</div>{/each}
-    {#if form?.errors}<div class="notice sorry" role="alert">Please check the highlighted fields below.</div>{/if}
+    {#if form && 'payProblem' in form}<div class="notice sorry" role="alert">{form.payProblem}</div>
+    {:else if form?.errors}<div class="notice sorry" role="alert">Please check the highlighted fields below.</div>{/if}
     <div class="bagpage">
       <form class="panel co" method="post" novalidate>
         <fieldset>

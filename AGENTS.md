@@ -9,6 +9,8 @@ Purses, photos, prices, sales, sold or hidden purses, her photo, the big top pho
 - `/mcp` on her website: the store's MCP server. Call `what_can_i_change` first; it lists every kind of change, the tool that does it and the exact field names.
 - `/admin` on her website: the store manager she signs in to.
 
+Card payments are turned on in Square and the Cloudflare dashboard, with no code change: walk her through `SQUARE.md`.
+
 These changes show on the site at once, with no commit and no deploy. Never hardcode content in code or in `src/lib/brand/*.json` to change what the site shows: saved settings win over that file, so the edit would not show anyway.
 
 ## 2. Change code only for what the tools can't do
