@@ -2,7 +2,8 @@
   import type { Snippet } from 'svelte';
   import SvgDefs from '$lib/components/SvgDefs.svelte';
   import Lockup from '$lib/components/Lockup.svelte';
-  import { fontsUrl, fullAddress, headerLockup, motif, telHref, themeCss } from '$lib/settings';
+  import '$lib/fonts.css';
+  import { fullAddress, headerLockup, motif, telHref, themeCss } from '$lib/settings';
   import type { LayoutData } from './$types';
 
   let { data, children }: { data: LayoutData; children: Snippet } = $props();
@@ -16,7 +17,6 @@
   <title>{s.store.name}</title>
   <meta name="description" content={`${s.store.name} — ${fullAddress(s)}`} />
   {#if s.store.icon}<link rel="icon" type="image/png" href={s.store.icon} />{/if}
-  <link rel="stylesheet" href={fontsUrl(s)} />
   {@html themeTag}
 </svelte:head>
 

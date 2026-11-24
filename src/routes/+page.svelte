@@ -5,6 +5,7 @@
   import { photoSrc } from '$lib/photos';
   import { activeBanner, leadTime, motif } from '$lib/settings';
   import { effectivePriceOf } from '$lib/price';
+  import { sealTextFit } from '$lib/seal';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -18,6 +19,8 @@
   });
   const shown = $derived(data.cat ? data.products.filter((p) => p.category_slug === data.cat) : data.products);
   const lead = $derived(leadTime(s));
+  const sealText = $derived(home.seal_text || s.store.award_text.toUpperCase());
+  const seal = $derived(sealTextFit(sealText));
   const trustIcon: Record<string, string> = { bag: 'i-bag', star: 'sp', heart: 'i-heart', phone: 'i-phone', clock: 'i-clock' };
   const catIcons: Record<string, string> = {
     bag: '<path d="M4 9h16l-1 11H5z"/><path d="M8 9a4 4 0 0 1 8 0"/>',
@@ -82,8 +85,8 @@
             fill="none"
             stroke="#ecd08a"
             stroke-width="1"
-          /><text font-family="Jost,sans-serif" font-size="10.500" font-weight="600" letter-spacing="2.400" fill="#ecd08a"
-            ><textPath href="#ring">{home.seal_text || s.store.award_text.toUpperCase()}</textPath></text
+          /><text font-family="Jost,sans-serif" font-size={seal.fontSize} font-weight="600" letter-spacing={seal.letterSpacing} fill="#ecd08a"
+            ><textPath href="#ring" textLength={seal.textLength} lengthAdjust="spacing">{sealText}</textPath></text
           ><path d="M60 40c1.700 11.700 8.300 18.300 20 20-11.700 1.700-18.300 8.300-20 20-1.700-11.700-8.300-18.300-20-20 11.700-1.700 18.300-8.300 20-20z" fill="#ecd08a" /></svg
         >
       {/if}
