@@ -47,3 +47,61 @@
 .muse li{margin:6px 0}
 .muse code{display:inline-block;max-width:100%;overflow-wrap:anywhere;background:var(--blush,#fde6f1);padding:2px 6px;border-radius:6px;font-size:14px}
 .muse .meta{color:#6f5f67;font-size:14px}
+.headrow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.headrow h1{margin:6px 0}
+.addbtn{padding:13px 22px}
+.findbox{max-width:420px;margin-bottom:14px}
+.rows.purses>li{align-items:stretch}
+.thumblink{flex:none;display:block}
+.mover{display:flex;flex-direction:column;gap:6px;flex:none}
+.arrow{font:inherit;font-size:16px;font-weight:700;width:48px;min-height:44px;border-radius:12px;border:1.5px solid #d9c2cc;background:#fff;color:inherit;cursor:pointer;padding:0}
+.arrow:disabled{opacity:.3;cursor:default}
+.arrow.top{font-size:13px}
+.acts form{display:flex;flex-wrap:wrap;gap:8px}
+.sbtn{min-height:44px;padding:9px 14px;font-size:15px}
+.quickprice summary{list-style:none;display:inline-flex;align-items:center}
+.quickprice summary::-webkit-details-marker{display:none}
+.quickprice[open] summary{background:var(--blush,#fde6f1)}
+.quickprice form{margin-top:8px;align-items:flex-end}
+.quickprice label{display:flex;flex-direction:column;font-size:13px;font-weight:600;gap:3px}
+.quickprice input{font:inherit;font-size:17px;width:96px;min-height:44px;border:1.5px solid #d9c2cc;border-radius:10px;padding:6px 10px}
+.photos .mover{flex-direction:row}
+.photos form{margin:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.picker-label{font-weight:600;font-size:15px}
+.picker-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bigbtn{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;min-height:64px;padding:10px 12px;border-radius:14px;border:1.5px solid #d9c2cc;background:#fff;font-weight:700;font-size:16px;cursor:pointer}
+.bigbtn.hot{background:var(--hot,#e0177c);border-color:var(--hot,#e0177c);color:#fff}
+.bigbtn input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.bigbtn:focus-within{outline:3px solid rgba(207,63,122,.45);outline-offset:2px}
+.carrier{display:none}
+.picked{list-style:none;margin:6px 0 0;padding:0}
+.picked li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #ead8e0}
+.picked img{width:64px;height:80px;object-fit:cover;border-radius:10px;flex:none}
+.picked .grow{flex:1}
+.savebar{position:sticky;bottom:0;padding:10px 0;background:linear-gradient(transparent,var(--cream,#fffafc) 30%)}
+.savebar .btn{width:100%;min-height:54px;font-size:18px}
+.adm-toast{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:50;width:min(560px,calc(100% - 24px));display:flex;gap:8px;align-items:center;background:#0e0b0d;color:#fff;border-radius:14px;padding:10px 10px 10px 16px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.adm-toast.bad{background:#9b1239}
+.adm-toast-text{flex:1;min-width:0}
+.adm-toast-text p{margin:2px 0}
+.adm-toast form{margin:0}
+.adm-toast .sbtn{background:#fff;color:#0e0b0d;border-color:#fff}
+.adm-toast .adm-toast-x{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+@media (max-width:640px){
+  .adm-top{padding:10px 12px 0}
+  .adm-top .in{display:block}
+  .adm-top b{display:block;margin-bottom:6px}
+  .adm-top nav{flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:10px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .adm-top nav a,.adm-top button{white-space:nowrap;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.08);min-height:44px;display:inline-flex;align-items:center}
+  .adm-top nav a[aria-current=page]{background:#f0d78c;color:#0e0b0d;text-decoration:none}
+  .adm-main{padding:14px 12px 110px}
+  .adm-main h1{font-size:25px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-12px;margin-right:-12px;padding:0 12px}
+  .tabs a{white-space:nowrap;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center}
+  .rows>li{gap:10px}
+  .rows .thumb{width:56px;height:70px}
+  .stack{max-width:none}
+  .photos li{gap:8px}
+  .photos img{width:56px;height:70px}
+}

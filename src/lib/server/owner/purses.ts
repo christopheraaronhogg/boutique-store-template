@@ -229,3 +229,84 @@ export async function clearSamples(db: D1Database): Promise<number> {
   const { results } = await db.prepare('DELETE FROM products WHERE is_sample = 1 RETURNING id').all<{ id: number }>();
   return results.length;
 }
+
+export type Placed = { id: number; pos: number };
+export type MoveTo = number | 'top';
+
+export function planMove(ordered: Placed[], id: number, to: MoveTo): Map<number, number> {
+  const at = ordered.findIndex((r) => r.id === id);
+  if (at < 0) throw new OwnerProblem('That isn’t in this list anymore.');
+  const next = ordered.map((r) => r.id);
+  if (to === 'top') {
+    if (at === 0) return new Map();
+    const lowest = Math.min(...ordered.map((r) => r.pos));
+    return new Map([[id, lowest - 1]]);
+  }
+  const other = ordered.findIndex((r) => r.id === to);
+  if (other < 0) throw new OwnerProblem('That isn’t in this list anymore.');
+  if (other === at) return new Map();
+  [next[at], next[other]] = [next[other], next[at]];
+  let first = Math.min(at, other);
+  let last = Math.max(at, other);
+  while (first > 0 && ordered[first - 1].pos >= ordered[first].pos) first--;
+  while (last < ordered.length - 1 && ordered[last + 1].pos <= ordered[last].pos) last++;
+  const strictly = ordered.slice(first, last + 1).every((r, i, rows) => i === 0 || r.pos > rows[i - 1].pos);
+  const changes = new Map<number, number>();
+  if (strictly) {
+    changes.set(id, ordered[other].pos);
+    changes.set(to, ordered[at].pos);
+    return changes;
+  }
+  const size = last - first + 1;
+  const below = first > 0 ? ordered[first - 1].pos : null;
+  const above = last < ordered.length - 1 ? ordered[last + 1].pos : null;
+  let start: number;
+  let from = first;
+  let upto = last;
+  if (below === null) start = (above ?? size + 1) - size;
+  else if (above === null || above - below - 1 >= size) start = below + 1;
+  else {
+    from = 0;
+    upto = ordered.length - 1;
+    start = 1;
+  }
+  for (let i = from; i <= upto; i++) {
+    const want = start + (i - from);
+    if (ordered.find((r) => r.id === next[i])!.pos !== want) changes.set(next[i], want);
+  }
+  return changes;
+}
+
+export async function purseOrder(db: D1Database): Promise<Placed[]> {
+  const { results } = await db.prepare('SELECT id, position AS pos FROM products ORDER BY position, id DESC').all<Placed>();
+  return results;
+}
+
+export async function photoOrder(db: D1Database, productId: number): Promise<Placed[]> {
+  const { results } = await db.prepare('SELECT id, sort AS pos FROM photos WHERE product_id = ? ORDER BY sort, id').bind(productId).all<Placed>();
+  return results;
+}
+
+const PAIRS_PER_STATEMENT = 30;
+
+async function writeOrder(db: D1Database, table: 'products' | 'photos', column: 'position' | 'sort', changes: Map<number, number>): Promise<void> {
+  const pairs = [...changes];
+  const writes: D1PreparedStatement[] = [];
+  for (let i = 0; i < pairs.length; i += PAIRS_PER_STATEMENT) {
+    const chunk = pairs.slice(i, i + PAIRS_PER_STATEMENT);
+    writes.push(
+      db
+        .prepare(`UPDATE ${table} SET ${column} = CASE id ${chunk.map(() => 'WHEN ? THEN ?').join(' ')} END WHERE id IN (${chunk.map(() => '?').join(', ')})`)
+        .bind(...chunk.flat(), ...chunk.map(([id]) => id)),
+    );
+  }
+  if (writes.length) await db.batch(writes);
+}
+
+export async function movePurse(db: D1Database, changes: Map<number, number>): Promise<void> {
+  await writeOrder(db, 'products', 'position', changes);
+}
+
+export async function movePhoto(db: D1Database, changes: Map<number, number>): Promise<void> {
+  await writeOrder(db, 'photos', 'sort', changes);
+}

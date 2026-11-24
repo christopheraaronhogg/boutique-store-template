@@ -11,6 +11,17 @@ type Entry = { id: number; tool: string; summary: string; targets: string; befor
 export type ChangeCard = { id: number; when: string; what: string; changed: string[]; undone: boolean; is_undo: boolean; can_undo?: boolean; why_not?: string };
 
 export const CHECKED_IN_LIST = 10;
+const SNAPSHOT_CHUNK = 90;
+
+async function selectIn<T>(db: D1Database, sql: string, values: (string | number)[]): Promise<T[]> {
+  const reads: D1PreparedStatement[] = [];
+  for (let i = 0; i < values.length; i += SNAPSHOT_CHUNK) {
+    const chunk = values.slice(i, i + SNAPSHOT_CHUNK);
+    reads.push(db.prepare(`${sql} (${chunk.map(() => '?').join(', ')})`).bind(...chunk));
+  }
+  if (reads.length === 0) return [];
+  return (await db.batch<T>(reads)).flatMap((r) => r.results);
+}
 
 export async function snapshot(db: D1Database, targets: Targets): Promise<State> {
   const state: State = { settings: {}, purses: {} };
@@ -19,9 +30,12 @@ export async function snapshot(db: D1Database, targets: Targets): Promise<State>
   const reads: D1PreparedStatement[] = [];
   if (keys === null) reads.push(db.prepare('SELECT key, value FROM settings ORDER BY key'));
   else if (keys.length > 0) reads.push(db.prepare(`SELECT key, value FROM settings WHERE key IN (${keys.map(() => '?').join(', ')}) ORDER BY key`).bind(...keys));
-  for (const id of ids) {
-    reads.push(db.prepare('SELECT * FROM products WHERE id = ?').bind(id));
-    reads.push(db.prepare('SELECT * FROM photos WHERE product_id = ? ORDER BY id').bind(id));
+  const chunks: number[][] = [];
+  for (let i = 0; i < ids.length; i += SNAPSHOT_CHUNK) chunks.push(ids.slice(i, i + SNAPSHOT_CHUNK));
+  for (const chunk of chunks) {
+    const marks = chunk.map(() => '?').join(', ');
+    reads.push(db.prepare(`SELECT * FROM products WHERE id IN (${marks})`).bind(...chunk));
+    reads.push(db.prepare(`SELECT * FROM photos WHERE product_id IN (${marks}) ORDER BY product_id, id`).bind(...chunk));
   }
   if (reads.length === 0) return state;
   const results = await db.batch<Row>(reads);
@@ -30,11 +44,18 @@ export async function snapshot(db: D1Database, targets: Targets): Promise<State>
     const stored = new Map((results[at++].results as { key: string; value: string }[]).map((r) => [r.key, r.value]));
     for (const key of keys ?? [...stored.keys()]) state.settings[key] = stored.get(key) ?? null;
   }
-  for (const id of ids) {
-    const row = results[at++].results[0] ?? null;
-    const photos = results[at++].results;
-    state.purses[String(id)] = { row, photos };
+  const rows = new Map<number, Row>();
+  const photos = new Map<number, Row[]>();
+  for (let c = 0; c < chunks.length; c++) {
+    for (const row of results[at++].results) rows.set(Number(row.id), row);
+    for (const photo of results[at++].results) {
+      const owner = Number(photo.product_id);
+      const list = photos.get(owner) ?? [];
+      list.push(photo);
+      photos.set(owner, list);
+    }
   }
+  for (const id of ids) state.purses[String(id)] = { row: rows.get(id) ?? null, photos: photos.get(id) ?? [] };
   return state;
 }
 
@@ -113,10 +134,7 @@ async function whyNot(db: D1Database, e: Entry): Promise<string | null> {
 async function photoMoved(db: D1Database, before: State): Promise<string | null> {
   const wanted = Object.entries(before.purses).flatMap(([purseId, p]) => p.photos.map((photo) => ({ id: Number(photo.id), purseId: Number(purseId) })));
   if (wanted.length === 0) return null;
-  const { results } = await db
-    .prepare(`SELECT id, product_id FROM photos WHERE id IN (${wanted.map(() => '?').join(', ')})`)
-    .bind(...wanted.map((w) => w.id))
-    .all<{ id: number; product_id: number }>();
+  const results = await selectIn<{ id: number; product_id: number }>(db, 'SELECT id, product_id FROM photos WHERE id IN', wanted.map((w) => w.id));
   const owner = new Map(results.map((r) => [r.id, r.product_id]));
   const taken = wanted.find((w) => owner.has(w.id) && owner.get(w.id) !== w.purseId);
   return taken ? `A photo it would bring back now belongs to another purse (purse ${owner.get(taken.id)}). Add that photo again instead.` : null;
@@ -158,10 +176,7 @@ function restore(db: D1Database, state: State): D1PreparedStatement[] {
 async function freeSlugs(db: D1Database, state: State): Promise<State> {
   const rows = Object.values(state.purses).flatMap((p) => (p.row ? [p.row] : []));
   if (rows.length === 0) return state;
-  const { results } = await db
-    .prepare(`SELECT id, slug FROM products WHERE slug IN (${rows.map(() => '?').join(', ')})`)
-    .bind(...rows.map((r) => String(r.slug)))
-    .all<{ id: number; slug: string }>();
+  const results = await selectIn<{ id: number; slug: string }>(db, 'SELECT id, slug FROM products WHERE slug IN', rows.map((r) => String(r.slug)));
   const taken = new Map(results.map((r) => [r.slug, r.id]));
   for (const row of rows) {
     const holder = taken.get(String(row.slug));
